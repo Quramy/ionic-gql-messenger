@@ -1,0 +1,33 @@
+# project: cj5w8vqez05b50105pzg1erpt
+# version: 15
+
+type File implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type User implements Node {
+  name: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  email: String @isUnique
+  isVerified: Boolean! @defaultValue(value: false)
+  messages: [Message!]! @relation(name: "MessageOnUser")
+  password: String
+  secret: String @isUnique
+}
+
+type Message implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  body: String!
+  author: User! @relation(name: "MessageOnUser")
+}
