@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { ContactPage, NewMessageModal } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -14,6 +13,8 @@ import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-trans
 import { ApolloModule } from 'apollo-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { RootNavPage } from '../pages/root-nav/root-nav';
+import { TimelinePage } from '../pages/timeline/timeline';
+import { NewMessageModal } from '../pages/timeline/timeline';
 
 export const wsClient = new SubscriptionClient('wss://subscriptions.ap-northeast-1.graph.cool/v1/cj5w8vqez05b50105pzg1erpt', {
   reconnect: true,
@@ -40,7 +41,7 @@ export const cloudSettings: CloudSettings = {
 @NgModule({
   declarations: [
     MyApp,
-    ContactPage,
+    TimelinePage,
     HomePage,
     RootNavPage,
     NewMessageModal,
@@ -54,7 +55,7 @@ export const cloudSettings: CloudSettings = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ContactPage,
+    TimelinePage,
     HomePage,
     RootNavPage,
     NewMessageModal,

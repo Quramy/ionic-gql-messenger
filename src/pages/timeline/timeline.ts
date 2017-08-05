@@ -92,7 +92,7 @@ mutation PostMessage($body: String!, $authorId: ID) {
     </ion-content>
   `,
 })
-export class ContactPage implements OnInit, OnDestroy {
+export class TimelinePage implements OnInit, OnDestroy {
 
   me: UserSummaryFragment;
   subscription = new Subscription();

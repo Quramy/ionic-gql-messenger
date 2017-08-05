@@ -7,7 +7,7 @@ import {
   UserSummaryFragment,
 } from '../../__generated__';
 import { Observable } from 'rxjs/Observable';
-import { ContactPage } from "../contact/contact";
+import { TimelinePage } from '../timeline/timeline';
 
 const query = gql`
   fragment UserSummary on User {
@@ -55,6 +55,6 @@ export class HomePage {
   }
 
   selectUser(user: UserSummaryFragment) {
-    this.navCtrl.push(ContactPage, { user });
+    this.navCtrl.push(TimelinePage, { user });
   }
 }
