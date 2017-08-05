@@ -43,8 +43,8 @@ export class NewMessageModal {
     public viewCtrl: ViewController,
   ) { }
 
-  ionViewDidLoad() {
-    setTimeout(() => this.textArea.setFocus(), 200);
+  ionViewDidEnter() {
+    setTimeout(() => this.textArea.setFocus(), 150);
   }
 
   submit() {
