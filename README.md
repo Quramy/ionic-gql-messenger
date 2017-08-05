@@ -1,9 +1,9 @@
 # Ionic GraphQL Messenger App
 A demonstration app for Ionic with Apollo(graph.cool).
 
-## Demonstration
-
 ![logos](logos_horizontal.png)
+
+## Demonstration
 
 - Web: https://Quramy.github.io/ionic-gql-messenger/index.html
 - Ionic APP ID: 59554521
