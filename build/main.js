@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 101:
+/***/ 100:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23,7 +23,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var users = (_a = ["\n  fragment UserSummary on User {\n    id, name, avatar,\n  }\n\n  query Users {\n    allUsers(last: 150) {\n      ...UserSummary,\n    }\n  }\n"], _a.raw = ["\n  fragment UserSummary on User {\n    id, name, avatar,\n  }\n\n  query Users {\n    allUsers(last: 150) {\n      ...UserSummary,\n    }\n  }\n"], __WEBPACK_IMPORTED_MODULE_1_graphql_tag___default()(_a));
 // 直近40件のメッセージを取得するクエリ
-var latestMessages = (_b = ["\nfragment MsgDetail on Message {\n  id, createdAt, body, updatedAt, createdAt,\n  author {\n    id, name, avatar\n  }\n}\n\nquery LatestMessages {\n  allMessages(last: 40, orderBy: createdAt_DESC) {\n    ...MsgDetail,\n  }\n}"], _b.raw = ["\nfragment MsgDetail on Message {\n  id, createdAt, body, updatedAt, createdAt,\n  author {\n    id, name, avatar\n  }\n}\n\nquery LatestMessages {\n  allMessages(last: 40, orderBy: createdAt_DESC) {\n    ...MsgDetail,\n  }\n}"], __WEBPACK_IMPORTED_MODULE_1_graphql_tag___default()(_b));
+var latestMessages = (_b = ["\nfragment MsgDetail on Message {\n  id, createdAt, body, updatedAt, createdAt,\n  author {\n    id, name, avatar\n  }\n}\n\nquery LatestMessages {\n  allMessages(last: 40, orderBy: createdAt_ASC) {\n    ...MsgDetail,\n  }\n}"], _b.raw = ["\nfragment MsgDetail on Message {\n  id, createdAt, body, updatedAt, createdAt,\n  author {\n    id, name, avatar\n  }\n}\n\nquery LatestMessages {\n  allMessages(last: 40, orderBy: createdAt_ASC) {\n    ...MsgDetail,\n  }\n}"], __WEBPACK_IMPORTED_MODULE_1_graphql_tag___default()(_b));
 // メッセージを書き込むmutation
 var postMessage = (_c = ["\nmutation PostMessage($body: String!, $authorId: ID) {\n  createMessage(body: $body, authorId: $authorId) {\n    id,\n  }\n}"], _c.raw = ["\nmutation PostMessage($body: String!, $authorId: ID) {\n  createMessage(body: $body, authorId: $authorId) {\n    id,\n  }\n}"], __WEBPACK_IMPORTED_MODULE_1_graphql_tag___default()(_c));
 // メッセージの追加を監視するGraphQL Suscription
@@ -136,10 +136,10 @@ RootNavPage = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_splash_screen__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_splash_screen__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timeline_timeline__ = __webpack_require__(301);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__graphql__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__graphql__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -192,12 +192,12 @@ HomePage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TimelinePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subscription__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subscription___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Subscription__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modals_new_message_new_message__ = __webpack_require__(302);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__graphql__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__graphql__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -219,33 +219,34 @@ var TimelinePage = (function () {
         this.navParams = navParams;
         this.modalCtrl = modalCtrl;
         this.gqlClient = gqlClient;
-        this.subscription = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subscription__["Subscription"]();
-        this.addedMessage$ = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"](null);
+        this.ownMessage$ = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
     }
     TimelinePage.prototype.ngOnInit = function () {
-        var _this = this;
         this.me = this.navParams.get('user');
-        var latestMessages$ = this.gqlClient.queryLatestMessages();
-        var addMessage$ = this.gqlClient.subscribeNewMessage();
-        latestMessages$
-            .map(function (msgs) { return msgs.data.allMessages; })
-            .take(1).toPromise().then(function (messages) {
-            _this.messages$ = _this.addedMessage$.asObservable()
-                .distinct(function (x) { return x && x.id; })
-                .scan(function (acc, message) { return message ? [message].concat(acc) : acc; }, messages);
+        // 1. Queryで取得した既存メッセージをObservable<MsgDetailFragment>へ変換
+        var latestMessage$ = this.gqlClient.queryLatestMessages()
+            .flatMap(function (_a) {
+            var data = _a.data;
+            return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].from(data.allMessages);
         });
-        this.subscription.add(addMessage$.subscribe(function (_a) {
+        // 2. Mutationによる自分で書いたメッセージのStream
+        var ownMessage$ = this.ownMessage$.asObservable();
+        // 3. Subscriptionによる新着メッセージをObservable<MsgDetailFragment>へ変換
+        var addMessage$ = this.gqlClient.subscribeNewMessage().map(function (_a) {
             var Message = _a.Message;
-            return _this.addedMessage$.next(Message.node);
-        }));
-    };
-    TimelinePage.prototype.ngOnDestroy = function () {
-        this.subscription.unsubscribe();
+            return Message.node;
+        });
+        // 4. 上記をmergeし、scan
+        this.messages$ = __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].merge(latestMessage$, ownMessage$, addMessage$)
+            .distinct(function (_a) {
+            var id = _a.id;
+            return id;
+        }).scan(function (acc, message) { return [message].concat(acc); }, []);
     };
     TimelinePage.prototype.openModal = function () {
         var _this = this;
         var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_4__modals_new_message_new_message__["a" /* NewMessageModal */], { author: this.me });
-        modal.onDidDismiss(function (message) { return _this.addedMessage$.next(message); });
+        modal.onDidDismiss(function (message) { return _this.ownMessage$.next(message); });
         modal.present();
     };
     return TimelinePage;
@@ -253,7 +254,7 @@ var TimelinePage = (function () {
 TimelinePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'page-contact',
-        template: "\n    <ion-header>\n      <ion-navbar>\n        <ion-title>Timeline</ion-title>\n        <ion-buttons end>\n          <button ion-button (click)=\"openModal()\">\n            <span ion-text color=\"primary\">Add</span>\n          </button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n\n    <ion-content>\n      <ng-container *ngIf=\"messages$\">\n        <ion-card *ngFor=\"let message of messages$ | async\">\n          <ion-item *ngIf=\"message.author\">\n            <ion-avatar item-start>\n              <img [src]=\"message.author.avatar\" *ngIf=\"message.author?.avatar\">\n              <ion-icon name=\"contact\" [style.color]=\"'#F0F0F0'\" [style.fontSize.px]=\"38\" *ngIf=\"!message.author.avatar\"></ion-icon>\n            </ion-avatar>\n            <h3>{{message.author.name}}</h3>\n          </ion-item>\n          <ion-item *ngIf=\"!message.author\">\n            <ion-avatar item-start>\n              <ion-icon name=\"ionitron\" [style.color]=\"'#488aff'\" [style.fontSize.px]=\"38\"></ion-icon>\n            </ion-avatar>\n            <h3>(anonymous user)</h3>\n          </ion-item>\n          <ion-card-content>\n            <p>{{message.body}}</p>\n          </ion-card-content>\n        </ion-card>\n      </ng-container>\n    </ion-content>\n  ",
+        template: "\n    <ion-header>\n      <ion-navbar>\n        <ion-title>Timeline</ion-title>\n        <ion-buttons end>\n          <button ion-button (click)=\"openModal()\">\n            <span ion-text color=\"primary\">Add</span>\n          </button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ng-container *ngIf=\"messages$\">\n        <ion-card *ngFor=\"let message of messages$ | async\">\n          <ion-item *ngIf=\"message.author\">\n            <ion-avatar item-start>\n              <img [src]=\"message.author.avatar\" *ngIf=\"message.author?.avatar\">\n              <ion-icon name=\"contact\" [style.color]=\"'#F0F0F0'\" [style.fontSize.px]=\"42\" *ngIf=\"!message.author.avatar\"></ion-icon>\n            </ion-avatar>\n            <h3>{{message.author.name}}</h3>\n          </ion-item>\n          <ion-item *ngIf=\"!message.author\">\n            <ion-avatar item-start>\n              <ion-icon name=\"ionitron\" [style.color]=\"'#488aff'\" [style.fontSize.px]=\"38\"></ion-icon>\n            </ion-avatar>\n            <h3>(anonymous user)</h3>\n          </ion-item>\n          <ion-card-content>\n            <p>{{message.body}}</p>\n          </ion-card-content>\n        </ion-card>\n      </ng-container>\n    </ion-content>\n  ",
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
         __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
@@ -272,7 +273,7 @@ TimelinePage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NewMessageModal; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -346,7 +347,7 @@ NewMessageModal = __decorate([
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_take__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_take__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_take___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_take__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_withLatestFrom__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_withLatestFrom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_withLatestFrom__);
@@ -354,9 +355,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinct__ = __webpack_require__(206);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinct___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinct__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_scan__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_scan__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_scan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_scan__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_switchMap__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_switchMap__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_switchMap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_dynamic__ = __webpack_require__(547);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_module__ = __webpack_require__(549);
@@ -389,13 +390,13 @@ Object(__WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(586);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(295);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_cloud_angular__ = __webpack_require__(650);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_apollo_client__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_apollo_client__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_subscriptions_transport_ws__ = __webpack_require__(941);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_subscriptions_transport_ws___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_subscriptions_transport_ws__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_apollo_angular__ = __webpack_require__(308);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__graphql_index__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__graphql_index__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_root_nav_root_nav__ = __webpack_require__(299);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_home_home__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_timeline_timeline__ = __webpack_require__(301);
@@ -488,7 +489,7 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(295);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_root_nav_root_nav__ = __webpack_require__(299);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
