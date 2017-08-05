@@ -57,17 +57,6 @@ export type UsersQuery = {
   } >,
 };
 
-export type UserDetalQueryVariables = {
-  id: string,
-};
-
-export type UserDetalQuery = {
-  User:  {
-    id: string,
-    name: string,
-  } | null,
-};
-
 export type MsgDetailFragment = {
   id: string,
   createdAt: string,

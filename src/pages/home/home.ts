@@ -5,8 +5,6 @@ import { Apollo } from 'apollo-angular';
 import {
   UsersQuery,
   UserSummaryFragment,
-  UserDetalQuery,
-  UserDetalQueryVariables,
 } from '../../__generated__';
 import { Observable } from 'rxjs/Observable';
 import { ContactPage } from "../contact/contact";
@@ -17,7 +15,7 @@ const query = gql`
   }
 
   query Users {
-    allUsers(last: 100) {
+    allUsers(last: 150) {
       ...UserSummary,
     }
   }

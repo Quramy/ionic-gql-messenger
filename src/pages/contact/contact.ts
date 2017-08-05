@@ -12,8 +12,10 @@ import gql from 'graphql-tag';
 import { AddMessageSubscription, LatestMessagesQuery, PostMessageMutation, PostMessageMutationVariables, MsgDetailFragment, UserSummaryFragment } from '../../__generated__';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+// 直近40件のメッセージを取得するクエリ
 const latestMessages = gql`
 fragment MsgDetail on Message {
   id, createdAt, body, updatedAt, createdAt,
@@ -21,12 +23,14 @@ fragment MsgDetail on Message {
     id, name, avatar
   }
 }
+
 query LatestMessages {
-  allMessages(last: 20, orderBy: createdAt_DESC) {
+  allMessages(last: 40, orderBy: createdAt_DESC) {
     ...MsgDetail,
   }
 }`;
 
+// メッセージを書き込むmutation
 const onAddMessage = gql`
 subscription AddMessage {
   Message(
@@ -42,6 +46,7 @@ subscription AddMessage {
   }
 }`;
 
+// メッセージの追加を監視するGraphQL Suscription
 const postMessage = gql`
 mutation PostMessage($body: String!, $authorId: ID) {
   createMessage(body: $body, authorId: $authorId) {
@@ -64,8 +69,8 @@ mutation PostMessage($body: String!, $authorId: ID) {
     </ion-header>
 
     <ion-content>
-      <ng-container *ngIf="message$">
-        <ion-card *ngFor="let message of message$ | async">
+      <ng-container *ngIf="messages$">
+        <ion-card *ngFor="let message of messages$ | async">
           <ion-item *ngIf="message.author">
             <ion-avatar item-start>
               <img [src]="message.author.avatar" *ngIf="message.author?.avatar">
@@ -91,7 +96,8 @@ export class ContactPage implements OnInit, OnDestroy {
 
   me: UserSummaryFragment;
   subscription = new Subscription();
-  message$: Observable<MsgDetailFragment[]>;
+  addedMessage$ = new BehaviorSubject<MsgDetailFragment>(null);
+  messages$: Observable<MsgDetailFragment[]>;
 
   constructor(
     public navCtrl: NavController,
@@ -101,27 +107,30 @@ export class ContactPage implements OnInit, OnDestroy {
   ) {
   }
 
-  openModal() {
-    const modal = this.modalCtrl.create(NewMessageModal, { author: this.me });
-    modal.onDidDismiss(x => console.log(x));
-    modal.present();
-  }
-
   ngOnInit() {
     this.me = this.navParams.get('user');
     const latestMessages$ = this.apollo.query<LatestMessagesQuery>({ query: latestMessages, fetchPolicy: 'network-only' });
-    const subject = new BehaviorSubject<AddMessageSubscription>(null);
     const addMessage$ = this.apollo.subscribe({ query: onAddMessage }) as Observable<AddMessageSubscription>;
-    latestMessages$.map(msgs => msgs.data.allMessages).take(1).toPromise().then(messages => {
-      this.message$ = subject.map(x => x && x.Message.node).scan((acc, message) => {
-        return message ? [message, ...acc] : acc;
-      }, messages);
-    });
-    this.subscription.add(addMessage$.subscribe(x => subject.next(x)));
+    latestMessages$
+      .map(msgs => msgs.data.allMessages)
+      .take(1).toPromise().then(messages => {
+        this.messages$ = this.addedMessage$.asObservable()
+          .distinct(x => x && x.id)
+          .scan((acc, message) => message ? [message, ...acc] : acc, messages)
+        ;
+      })
+    ;
+    this.subscription.add(addMessage$.subscribe(({ Message })=> this.addedMessage$.next(Message.node)));
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  openModal() {
+    const modal = this.modalCtrl.create(NewMessageModal, { author: this.me });
+    modal.onDidDismiss(message => this.addedMessage$.next(message));
+    modal.present();
   }
 
 }
@@ -174,10 +183,13 @@ export class NewMessageModal {
         body: this.text,
       } as PostMessageMutationVariables
     }).first().subscribe(x => {
-      const createdId = x.data.createMessage.id;
+      const id = x.data.createMessage.id;
       this.viewCtrl.dismiss({
-        author: this.navParams.get('author'),
+        id,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         body: this.text,
+        author: this.navParams.get('author'),
       });
     });
   }
