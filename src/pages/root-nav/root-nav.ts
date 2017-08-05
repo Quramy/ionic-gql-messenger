@@ -6,12 +6,8 @@ import { HomePage } from '../home/home';
     <ion-nav [root]="rootPage"></ion-nav>
   `,
 })
-export class TabsPage {
+export class RootNavPage {
   get rootPage() {
     return HomePage;
-  }
-
-  constructor() {
-
   }
 }

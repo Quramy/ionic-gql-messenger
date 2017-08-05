@@ -5,7 +5,6 @@ import { MyApp } from './app.component';
 
 import { ContactPage, NewMessageModal } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -14,6 +13,7 @@ import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import { ApolloModule } from 'apollo-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { RootNavPage } from '../pages/root-nav/root-nav';
 
 export const wsClient = new SubscriptionClient('wss://subscriptions.ap-northeast-1.graph.cool/v1/cj5w8vqez05b50105pzg1erpt', {
   reconnect: true,
@@ -33,7 +33,7 @@ export function provideClient(): ApolloClient {
 
 export const cloudSettings: CloudSettings = {
   core: {
-    app_id: '11b73261',
+    app_id: '59554521',
   },
 };
 
@@ -42,7 +42,7 @@ export const cloudSettings: CloudSettings = {
     MyApp,
     ContactPage,
     HomePage,
-    TabsPage,
+    RootNavPage,
     NewMessageModal,
   ],
   imports: [
@@ -56,7 +56,7 @@ export const cloudSettings: CloudSettings = {
     MyApp,
     ContactPage,
     HomePage,
-    TabsPage,
+    RootNavPage,
     NewMessageModal,
   ],
   providers: [
