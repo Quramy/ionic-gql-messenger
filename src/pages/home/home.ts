@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { NavController} from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { TimelinePage } from '../timeline/timeline';
 import { GqlClient } from '../../graphql';
@@ -33,8 +34,10 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     private gqlClient: GqlClient,
+    private splash: SplashScreen,
   ) {
-    this.users$ = this.gqlClient.queryUsers().map(({ data }) => data.allUsers);
+    this.splash.show();
+    this.users$ = this.gqlClient.queryUsers().map(({ data }) => data.allUsers).do(() => this.splash.hide());
   }
 
   selectUser(user: UserSummaryFragment) {

@@ -27,7 +27,7 @@ import { GqlClient } from '../../graphql';
     </ion-toolbar>
   </ion-header>
   <ion-content>
-    <ion-textarea #message [(ngModel)]="text"></ion-textarea>
+    <ion-textarea #message [(ngModel)]="text" placeholder="何か書くべし"></ion-textarea>
   </ion-content>
   `
 })
