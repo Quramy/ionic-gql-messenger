@@ -14,7 +14,7 @@ import { ApolloModule } from 'apollo-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { RootNavPage } from '../pages/root-nav/root-nav';
 import { TimelinePage } from '../pages/timeline/timeline';
-import { NewMessageModal } from '../pages/timeline/timeline';
+import { NewMessageModal } from '../modals/new-message/new-message';
 
 export const wsClient = new SubscriptionClient('wss://subscriptions.ap-northeast-1.graph.cool/v1/cj5w8vqez05b50105pzg1erpt', {
   reconnect: true,
