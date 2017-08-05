@@ -32,7 +32,7 @@ fragment MsgDetail on Message {
 }
 
 query LatestMessages {
-  allMessages(last: 40, orderBy: createdAt_DESC) {
+  allMessages(last: 40, orderBy: createdAt_ASC) {
     ...MsgDetail,
   }
 }`;

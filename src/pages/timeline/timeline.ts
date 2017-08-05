@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   NavController,
   ModalController,
@@ -8,9 +8,7 @@ import {
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NewMessageModal } from '../../modals/new-message/new-message';
 import { GqlClient } from '../../graphql';
 import { UserSummaryFragment, MsgDetailFragment } from '../../graphql/types';
@@ -28,14 +26,13 @@ import { UserSummaryFragment, MsgDetailFragment } from '../../graphql/types';
         </ion-buttons>
       </ion-navbar>
     </ion-header>
-
     <ion-content>
       <ng-container *ngIf="messages$">
         <ion-card *ngFor="let message of messages$ | async">
           <ion-item *ngIf="message.author">
             <ion-avatar item-start>
               <img [src]="message.author.avatar" *ngIf="message.author?.avatar">
-              <ion-icon name="contact" [style.color]="'#F0F0F0'" [style.fontSize.px]="38" *ngIf="!message.author.avatar"></ion-icon>
+              <ion-icon name="contact" [style.color]="'#F0F0F0'" [style.fontSize.px]="42" *ngIf="!message.author.avatar"></ion-icon>
             </ion-avatar>
             <h3>{{message.author.name}}</h3>
           </ion-item>
@@ -53,11 +50,10 @@ import { UserSummaryFragment, MsgDetailFragment } from '../../graphql/types';
     </ion-content>
   `,
 })
-export class TimelinePage implements OnInit, OnDestroy {
+export class TimelinePage implements OnInit {
 
   me: UserSummaryFragment;
-  subscription = new Subscription();
-  addedMessage$ = new BehaviorSubject<MsgDetailFragment>(null);
+  ownMessage$ = new Subject<MsgDetailFragment>();
   messages$: Observable<MsgDetailFragment[]>;
 
   constructor(
@@ -70,27 +66,25 @@ export class TimelinePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.me = this.navParams.get('user');
-    const latestMessages$ = this.gqlClient.queryLatestMessages();
-    const addMessage$ = this.gqlClient.subscribeNewMessage();
-    latestMessages$
-      .map(msgs => msgs.data.allMessages)
-      .take(1).toPromise().then(messages => {
-        this.messages$ = this.addedMessage$.asObservable()
-          .distinct(x => x && x.id)
-          .scan((acc, message) => message ? [message, ...acc] : acc, messages)
-        ;
-      })
-    ;
-    this.subscription.add(addMessage$.subscribe(({ Message })=> this.addedMessage$.next(Message.node)));
-  }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // 1. Queryで取得した既存メッセージをObservable<MsgDetailFragment>へ変換
+    const latestMessage$ = this.gqlClient.queryLatestMessages()
+      .flatMap(({ data }) => Observable.from(data.allMessages));
+
+    // 2. Mutationによる自分で書いたメッセージのStream
+    const ownMessage$ = this.ownMessage$.asObservable();
+
+    // 3. Subscriptionによる新着メッセージをObservable<MsgDetailFragment>へ変換
+    const addMessage$ = this.gqlClient.subscribeNewMessage().map(({ Message }) => Message.node);
+
+    // 4. 上記をmergeし、scan
+    this.messages$ = Observable.merge(latestMessage$, ownMessage$, addMessage$)
+      .distinct(({ id }) => id).scan((acc, message) => [message, ...acc], []);
   }
 
   openModal() {
     const modal = this.modalCtrl.create(NewMessageModal, { author: this.me });
-    modal.onDidDismiss(message => this.addedMessage$.next(message));
+    modal.onDidDismiss(message => this.ownMessage$.next(message));
     modal.present();
   }
 
