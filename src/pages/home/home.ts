@@ -1,25 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import gql from 'graphql-tag';
-import { Apollo } from 'apollo-angular';
-import {
-  UsersQuery,
-  UserSummaryFragment,
-} from '../../__generated__';
 import { Observable } from 'rxjs/Observable';
 import { TimelinePage } from '../timeline/timeline';
-
-const query = gql`
-  fragment UserSummary on User {
-    id, name, avatar,
-  }
-
-  query Users {
-    allUsers(last: 150) {
-      ...UserSummary,
-    }
-  }
-`;
+import { GqlClient } from '../../graphql';
+import { UserSummaryFragment } from '../../graphql/types';
 
 @Component({
   selector: 'page-home',
@@ -48,10 +32,9 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
-    private apollo: Apollo,
+    private gqlClient: GqlClient,
   ) {
-    this.users$ = this.apollo.query<UsersQuery>({ query })
-      .map(({ data }) => data.allUsers);
+    this.users$ = this.gqlClient.queryUsers().map(({ data }) => data.allUsers);
   }
 
   selectUser(user: UserSummaryFragment) {

@@ -13,7 +13,7 @@
         "postinstall": "rm -rf node_modules/@types/async",
         "deploy:web": "gh-pages -d www",
         "update:schema": "apollo-codegen introspect-schema https://api.graph.cool/simple/v1/cj5w8vqez05b50105pzg1erpt --output schema.json",
-        "gen": "apollo-codegen generate --target ts --output src/__generated__.ts \"src/**/*.ts\""
+        "gen": "apollo-codegen generate --target ts --output src/graphql/types.ts \"src/graphql/**/*.ts\""
     },
     "dependencies": {
         "@angular/common": "4.1.3",

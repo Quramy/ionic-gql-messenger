@@ -7,6 +7,14 @@ export type _ModelMutationType =
   "DELETED";
 
 
+export type UsersQuery = {
+  allUsers:  Array< {
+    id: string,
+    name: string,
+    avatar: string | null,
+  } >,
+};
+
 export type LatestMessagesQuery = {
   allMessages:  Array< {
     id: string,
@@ -19,6 +27,17 @@ export type LatestMessagesQuery = {
       avatar: string | null,
     } | null,
   } >,
+};
+
+export type PostMessageMutationVariables = {
+  body: string,
+  authorId?: string | null,
+};
+
+export type PostMessageMutation = {
+  createMessage:  {
+    id: string,
+  } | null,
 };
 
 export type AddMessageSubscription = {
@@ -38,23 +57,10 @@ export type AddMessageSubscription = {
   } | null,
 };
 
-export type PostMessageMutationVariables = {
-  body: string,
-  authorId?: string | null,
-};
-
-export type PostMessageMutation = {
-  createMessage:  {
-    id: string,
-  } | null,
-};
-
-export type UsersQuery = {
-  allUsers:  Array< {
-    id: string,
-    name: string,
-    avatar: string | null,
-  } >,
+export type UserSummaryFragment = {
+  id: string,
+  name: string,
+  avatar: string | null,
 };
 
 export type MsgDetailFragment = {
@@ -67,11 +73,5 @@ export type MsgDetailFragment = {
     name: string,
     avatar: string | null,
   } | null,
-};
-
-export type UserSummaryFragment = {
-  id: string,
-  name: string,
-  avatar: string | null,
 };
 /* tslint:enable */

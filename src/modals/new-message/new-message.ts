@@ -5,17 +5,8 @@ import {
   ViewController,
   TextInput
 } from 'ionic-angular';
-import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { PostMessageMutation, PostMessageMutationVariables } from '../../__generated__';
-
-// メッセージを書き込むmutation
-const postMessage = gql`
-mutation PostMessage($body: String!, $authorId: ID) {
-  createMessage(body: $body, authorId: $authorId) {
-    id,
-  }
-}`;
+import { GqlClient } from '../../graphql';
 
 @Component({
   selector: 'new-message-modal',
@@ -46,7 +37,7 @@ export class NewMessageModal {
   text: string = "";
 
   constructor(
-    private apollo: Apollo,
+    private gqlClient: GqlClient,
     public platform: Platform,
     public navParams: NavParams,
     public viewCtrl: ViewController,
@@ -58,12 +49,9 @@ export class NewMessageModal {
 
   submit() {
     if (!this.text.length) return;
-    this.apollo.mutate<PostMessageMutation>({
-      mutation: postMessage,
-      variables: {
-        authorId: this.navParams.get('author').id || null,
-        body: this.text,
-      } as PostMessageMutationVariables
+    this.gqlClient.postNewMessage({
+      authorId: this.navParams.get('author').id || null,
+      body: this.text,
     }).first().subscribe(x => {
       const id = x.data.createMessage.id;
       this.viewCtrl.dismiss({

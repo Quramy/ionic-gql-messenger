@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   NavController,
   ModalController,
@@ -7,43 +7,13 @@ import {
 } from 'ionic-angular';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { AddMessageSubscription, LatestMessagesQuery, PostMessageMutation, PostMessageMutationVariables, MsgDetailFragment, UserSummaryFragment } from '../../__generated__';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NewMessageModal } from '../../modals/new-message/new-message';
-
-// 直近40件のメッセージを取得するクエリ
-const latestMessages = gql`
-fragment MsgDetail on Message {
-  id, createdAt, body, updatedAt, createdAt,
-  author {
-    id, name, avatar
-  }
-}
-
-query LatestMessages {
-  allMessages(last: 40, orderBy: createdAt_DESC) {
-    ...MsgDetail,
-  }
-}`;
-
-// メッセージの追加を監視するGraphQL Suscription
-const onAddMessage = gql`
-subscription AddMessage {
-  Message(
-    filter: {}
-  ) {
-    mutation,
-    node {
-      id, createdAt, body, updatedAt, createdAt,
-      author {
-        id, name, avatar
-      }
-    }
-  }
-}`;
+import { GqlClient } from '../../graphql';
+import { UserSummaryFragment, MsgDetailFragment } from '../../graphql/types';
 
 @Component({
   selector: 'page-contact',
@@ -94,14 +64,14 @@ export class TimelinePage implements OnInit, OnDestroy {
     public navCtrl: NavController,
     private navParams: NavParams,
     private modalCtrl: ModalController,
-    private apollo: Apollo,
+    private gqlClient: GqlClient,
   ) {
   }
 
   ngOnInit() {
     this.me = this.navParams.get('user');
-    const latestMessages$ = this.apollo.query<LatestMessagesQuery>({ query: latestMessages, fetchPolicy: 'network-only' });
-    const addMessage$ = this.apollo.subscribe({ query: onAddMessage }) as Observable<AddMessageSubscription>;
+    const latestMessages$ = this.gqlClient.queryLatestMessages();
+    const addMessage$ = this.gqlClient.subscribeNewMessage();
     latestMessages$
       .map(msgs => msgs.data.allMessages)
       .take(1).toPromise().then(messages => {
